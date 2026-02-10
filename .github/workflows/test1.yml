@@ -1,5 +1,4 @@
 name: A Docker-based GitHub Action driver
-# プライベートアクション版
 
 on:
   workflow_dispatch:
@@ -26,4 +25,4 @@ jobs:
           who-to-greet: 'Mona the Octocat'
       # Use the output from the `hello` step
       - name: Get the output time
-        run: echo "The time was "${{ steps.hello.outputs.time }}"
+        run: echo "The time was \"${{ steps.hello.outputs.time }}\""
