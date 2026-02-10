@@ -8,6 +8,8 @@ updates:
   - package-ecosystem: github-actions
     directories:
       - /   # for /.github/workflows/*.yml
+      - ./  # for /action.yml
+      - ./prebuild  # for /prebuild/action.yml
     schedule:
       interval: weekly
     ignore:
