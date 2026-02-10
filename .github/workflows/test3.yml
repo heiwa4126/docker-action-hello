@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: heiwa4126/docker-action-hello/prebuild@5c53e8916a9155e243f4e698ed8deab830ba9375 # v0.0.1
+      - uses: heiwa4126/docker-action-hello/prebuild@v0.0.1
         id: hello
         with:
           who-to-greet: 'Mona the Octocat'
