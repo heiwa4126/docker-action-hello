@@ -20,7 +20,7 @@ jobs:
       contents: read
     steps:
       # - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: heiwa4126/docker-action-hello
+      - uses: heiwa4126/docker-action-hello@v0.0.1
         id: hello
         with:
           who-to-greet: 'Mona the Octocat'
