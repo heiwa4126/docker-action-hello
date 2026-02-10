@@ -1,0 +1,25 @@
+name: A Docker-based GitHub Action driver
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test1:
+    name: A Docker-based GitHub Action driver
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: ./
+        id: hello-world
+        with:
+          who-to-greet: 'Mona the Octocat'

@@ -1,0 +1,85 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: "3"
+
+vars:
+  BIN_NAME: "docker-action-hello"
+  IMAGE_ID: "docker-action-hello"
+
+tasks:
+  default:
+    cmds:
+      - task: audit
+      - task: test
+      - task: lint
+      - task: fmt
+      # - task: run
+
+  build-docker:
+    desc: Build Docker image
+    cmds:
+      - docker build ./ -t "{{.IMAGE_ID}}"
+      - docker image list "{{.IMAGE_ID}}"
+
+  start-docker:
+    desc: Run Docker container
+    cmds :
+      - docker run --rm  "{{.IMAGE_ID}}"
+
+  lint-shell:
+    desc: Lint shell scripts
+    cmds:
+      - shellcheck ./entrypoint.sh
+
+  lint-dockerfile:
+    desc: Lint Dockerfile
+    cmds:
+      - hadolint ./Dockerfile
+
+  lint-actions:
+    desc: Lint GitHub Actions
+    cmds:
+      - find -name action.yml -o -name action.yaml | xargs action-validator -v
+
+  lint-workflows:
+    desc: Lint GitHub Workflows
+    cmds:
+      - actionlint --verbose
+
+  lint:
+    desc: Lint all
+    cmds:
+      - task: lint-shell
+      - task: lint-dockerfile
+      - task: lint-workflows
+      - task: lint-actions
+
+
+  update-aqua:
+    desc: Update Aqua dependencies
+    cmds:
+      - aqua update-aqua
+      - aqua update
+      - aqua vacuum
+
+  pinact-update:
+    desc: Update GitHub Actions (both workflows and actions)
+    cmds:
+      - pinact run --update
+
+  # lint-workflows-docker:
+  #   desc: Lint GitHub Workflows with Docker
+  #   cmds:
+  #     - docker run --rm -v "$(pwd):$(pwd)" -w "$(pwd)" rhysd/actionlint:latest --verbose
+
+
+  audit:
+    desc: Audit all
+    cmds:
+      - task: audit-go
+
+  trivy:
+    desc: Scan Docker image with Trivy
+    cmds:
+      - trivy image --severity HIGH,CRITICAL "{{.IMAGE_ID}}"
+      - trivy fs --severity HIGH,CRITICAL .
