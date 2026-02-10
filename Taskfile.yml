@@ -3,17 +3,12 @@
 version: "3"
 
 vars:
-  BIN_NAME: "docker-action-hello"
   IMAGE_ID: "docker-action-hello"
 
 tasks:
   default:
     cmds:
-      - task: audit
-      - task: test
       - task: lint
-      - task: fmt
-      # - task: run
 
   build-docker:
     desc: Build Docker image
@@ -21,10 +16,20 @@ tasks:
       - docker build ./ -t "{{.IMAGE_ID}}"
       - docker image list "{{.IMAGE_ID}}"
 
-  start-docker:
+  run:
+    desc: Run /entrypoint.sh with arguments
+    cmds :
+      - ./entrypoint.sh world!
+
+  run-docker:
     desc: Run Docker container
     cmds :
-      - docker run --rm  "{{.IMAGE_ID}}"
+      - docker run --rm "{{.IMAGE_ID}}"
+
+  run-docker1:
+    desc: Run Docker container with argument
+    cmds :
+      - docker run --rm "{{.IMAGE_ID}}" world!
 
   lint-shell:
     desc: Lint shell scripts
@@ -55,6 +60,10 @@ tasks:
       - task: lint-actions
 
 
+
+
+
+
   update-aqua:
     desc: Update Aqua dependencies
     cmds:
@@ -71,12 +80,6 @@ tasks:
   #   desc: Lint GitHub Workflows with Docker
   #   cmds:
   #     - docker run --rm -v "$(pwd):$(pwd)" -w "$(pwd)" rhysd/actionlint:latest --verbose
-
-
-  audit:
-    desc: Audit all
-    cmds:
-      - task: audit-go
 
   trivy:
     desc: Scan Docker image with Trivy
