@@ -1,4 +1,4 @@
-name: (test1) A Docker-based GitHub Action driver
+name: (test3) A Docker-based GitHub Action driver
 
 on:
   workflow_dispatch:
@@ -8,17 +8,17 @@ defaults:
     shell: bash
 
 concurrency:
-  group: test1-${{ github.ref }}
+  group: test3-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test1:
+  test3:
     name: A Docker-based GitHub Action driver
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - uses: heiwa4126/docker-action-hello/prebuild@v0.0.1
+      - uses: heiwa4126/docker-action-hello/prebuild@5c53e8916a9155e243f4e698ed8deab830ba9375 # v0.0.1
         id: hello
         with:
           who-to-greet: 'Mona the Octocat'
