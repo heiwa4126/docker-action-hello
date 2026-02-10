@@ -2,7 +2,6 @@
 
 [Docker コンテナーのアクションを作成する - GitHub ドキュメント](https://docs.github.com/ja/actions/tutorials/use-containerized-services/create-a-docker-container-action)
 をやってみる。
-
 若干アレンジ
 
 ## 実行
@@ -16,6 +15,10 @@ gh workflow run test2.yml  # プライベートアクション版
 ```
 
 ## 開発
+
+linter などは CI/CD できるよう
+[aquaproj/aqua](https://github.com/aquaproj/aqua)
+で管理しています。
 
 ```sh
 aqua i

@@ -1,0 +1,77 @@
+name: Publish to GitHub Packages
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+  # workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    name: Publish to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: aquaproj/aqua-installer@11dd79b4e498d471a9385aa9fb7f62bb5f52a73c # v4.0.4
+        with:
+          # aqua_version: v2.56.6
+          aqua_version: " " # `aqua self-update` に渡される. 空文字列にすると最新バージョンになる(はず)
+          aqua_opts: " " # `-l` オプションを無効化してリンクでないインストールにする
+          github_token: ${{ github.token }} # リンクでないインストールに必要
+      - name: "INFO: Show tool versions"
+        run: |
+          echo "::group::Show version"
+          aqua --version
+          docker --version
+          echo "::endgroup::"
+      - run: task lint
+      - run: task build-docker
+
+      - name: Smoke-test with docker
+        run: |
+          task run-docker
+          task run-docker1
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set version tag
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          echo "VERSION_TAG=$TAG" >> "${GITHUB_ENV}"
+
+      - name: Tag and push Docker image
+        run: |
+          IMAGE_BASE=ghcr.io/${{ github.repository }}
+          IMAGE_LATEST=$IMAGE_BASE:latest
+
+          # # Get image digest (SHA256 hash)
+          # IMAGE_ID=$(docker inspect --format='{{index .Id}}' "docker-action-hello" | cut -d: -f2 | cut -c1-12)
+          # IMAGE_DIGEST=$IMAGE_BASE:$IMAGE_ID
+
+          # Tag and push
+          docker tag "docker-action-hello" "$IMAGE_LATEST"
+          # docker tag "docker-action-hello" "$IMAGE_DIGEST"
+          docker tag "docker-action-hello" "$IMAGE_BASE:$VERSION_TAG"
+          docker push "$IMAGE_LATEST"
+          # docker push "$IMAGE_DIGEST"
+          docker push "$IMAGE_BASE:$VERSION_TAG"
+
+          echo "Pushed: $IMAGE_LATEST"
+          # echo "Pushed: $IMAGE_DIGEST"
+          echo "Pushed: $IMAGE_BASE:$VERSION_TAG"
