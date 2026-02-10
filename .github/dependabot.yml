@@ -20,3 +20,12 @@ updates:
       all-dependencies:
         patterns:
           - "*"
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
