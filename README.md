@@ -12,6 +12,7 @@ UI から、もしくは以下の CLI で
 ```sh
 gh workflow run test1.yml
 gh workflow run test2.yml  # プライベートアクション版
+gh workflow run test3.yml  # ビルド済みのイメージを使う例
 ```
 
 ## 開発
@@ -28,3 +29,11 @@ task build-docker
 task run-docker
 task run-docker1 # 引数つき
 ```
+
+## GitHub Packages
+
+semver の tag をつけて push すると、GitHub Packages に docker image を publish します。
+
+[Package docker-action-hello](https://github.com/heiwa4126/docker-action-hello/pkgs/container/docker-action-hello)
+
+`test3.yml` と `prebuild/action.yml` は、このイメージを使用します。
