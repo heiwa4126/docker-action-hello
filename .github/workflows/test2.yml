@@ -9,18 +9,18 @@ defaults:
     shell: bash
 
 concurrency:
-  group: test1-${{ github.ref }}
+  group: test2-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test1:
+  test2:
     name: A Docker-based GitHub Action driver
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      # - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: heiwa4126/docker-action-hello
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: ./  # なんか変だけどまちがってない
         id: hello
         with:
           who-to-greet: 'Mona the Octocat'
