@@ -28,6 +28,7 @@ task run
 task build-docker
 task run-docker
 task run-docker1 # 引数つき
+task trivy  # trivy は別インストール必要
 ```
 
 ## GitHub Packages

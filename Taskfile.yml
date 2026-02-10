@@ -44,7 +44,7 @@ tasks:
   lint-actions:
     desc: Lint GitHub Actions
     cmds:
-      - find -name action.yml -o -name action.yaml | xargs action-validator -v
+      - find -name action.yml -o -name action.yaml | xargs -t action-validator -v
 
   lint-workflows:
     desc: Lint GitHub Workflows
