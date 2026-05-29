@@ -21,7 +21,9 @@ jobs:
       - uses: heiwa4126/docker-action-hello/prebuild@ca00c2abf58bb8ea4d39d934ef87416847bd6811 # v0.0.1
         id: hello
         with:
-          who-to-greet: 'Mona the Octocat'
+          who-to-greet: "Mona the Octocat"
       # Use the output from the `hello` step
       - name: Get the output time
-        run: echo "The time was \"${{ steps.hello.outputs.time }}\""
+        env:
+          OUTPUT_TIME: ${{ steps.hello.outputs.time }}
+        run: echo "The time was \"$OUTPUT_TIME\""

@@ -7,9 +7,9 @@ version: 2
 updates:
   - package-ecosystem: github-actions
     directories:
-      - /   # for /.github/workflows/*.yml
-      - ./  # for /action.yml
-      - ./prebuild  # for /prebuild/action.yml
+      - / # for /.github/workflows/*.yml
+      - ./ # for /action.yml
+      - ./prebuild # for /prebuild/action.yml
     schedule:
       interval: weekly
     ignore:
@@ -20,6 +20,8 @@ updates:
       all-dependencies:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: docker
     directory: /
@@ -29,3 +31,5 @@ updates:
       all-dependencies:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7

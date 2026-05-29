@@ -18,17 +18,17 @@ tasks:
 
   run:
     desc: Run /entrypoint.sh with arguments
-    cmds :
+    cmds:
       - ./entrypoint.sh world!
 
   run-docker:
     desc: Run Docker container
-    cmds :
+    cmds:
       - docker run --rm "{{.IMAGE_ID}}"
 
   run-docker1:
     desc: Run Docker container with argument
-    cmds :
+    cmds:
       - docker run --rm "{{.IMAGE_ID}}" world!
 
   lint-shell:
@@ -58,11 +58,6 @@ tasks:
       - task: lint-dockerfile
       - task: lint-workflows
       - task: lint-actions
-
-
-
-
-
 
   update-aqua:
     desc: Update Aqua dependencies
